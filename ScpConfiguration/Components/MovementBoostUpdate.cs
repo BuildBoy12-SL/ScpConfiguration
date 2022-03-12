@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Scp207Update.cs" company="Build">
+// <copyright file="MovementBoostUpdate.cs" company="Build">
 // Copyright (c) Build. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,10 +14,10 @@ namespace ScpConfiguration.Components
     using UnityEngine;
 
     /// <inheritdoc />
-    public class Scp207Update : MonoBehaviour
+    public class MovementBoostUpdate : MonoBehaviour
     {
         private Player player;
-        private Scp207 scp207;
+        private MovementBoost movementBoost;
 
         private void OnHurting(HurtingEventArgs ev)
         {
@@ -28,22 +28,22 @@ namespace ScpConfiguration.Components
         private void Awake()
         {
             player = Player.Get(gameObject);
-            scp207 = player.ReferenceHub.playerEffectsController.GetEffect<Scp207>();
+            movementBoost = player.ReferenceHub.playerEffectsController.GetEffect<MovementBoost>();
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
         }
 
         private void FixedUpdate()
         {
-            if (!scp207.IsEnabled && Plugin.Instance.Config.Scp207Amounts.TryGetValue(player.Role, out byte intensity))
+            if (!movementBoost.IsEnabled && Plugin.Instance.Config.MovementBoostAmounts.TryGetValue(player.Role, out byte intensity))
             {
-                scp207.Intensity = --intensity;
-                player.EnableEffect(scp207);
+                movementBoost.Intensity = --intensity;
+                player.EnableEffect(movementBoost);
             }
         }
 
         private void OnDestroy()
         {
-            player.DisableEffect<Scp207>();
+            player.DisableEffect<MovementBoost>();
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
         }
     }

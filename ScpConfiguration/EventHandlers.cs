@@ -27,11 +27,11 @@ namespace ScpConfiguration
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player.GameObject.TryGetComponent(out Scp207Update scp207Update))
+            if (ev.Player.GameObject.TryGetComponent(out MovementBoostUpdate scp207Update))
                 Object.Destroy(scp207Update);
 
-            if (plugin.Config.Scp207Amounts.ContainsKey(ev.NewRole))
-                ev.Player.GameObject.AddComponent<Scp207Update>();
+            if (plugin.Config.MovementBoostAmounts.ContainsKey(ev.NewRole))
+                ev.Player.GameObject.AddComponent<MovementBoostUpdate>();
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
@@ -42,7 +42,7 @@ namespace ScpConfiguration
 
         private void AdjustScp939Damage(HurtingEventArgs ev)
         {
-            if (ev.Attacker != null && ev.Attacker.Role.Is939())
+            if (ev.Attacker != null && ev.Attacker.Role.Type.Is939())
                 ev.Amount = plugin.Config.Scp939Damage;
         }
     }
